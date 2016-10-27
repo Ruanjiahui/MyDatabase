@@ -120,34 +120,31 @@ public class ClassHandler {
                     //设置可以访问
                     field.setAccessible(true);
 
-                    //如果属性的修饰符是private 和 public
-                    if (DataType.PRIVATE.equals(Modifier.toString(field.getModifiers())) || DataType.PUBLIC.equals(Modifier.toString(field.getModifiers()))) {
-                        //如果数据库的字段名和类的属性名称一样就说明是同一个变量
-                        if (field.getName().equals(columName)) {
-                            //将数据库的数据设置给类的属性
-                            switch (field.getType().toString()) {
-                                case DataType.STRING:
-                                    field.set(object, cursor.getString(cursor.getColumnIndex(columName)));
-                                    break;
-                                case DataType.INTEGER:
-                                    field.set(object, cursor.getInt(cursor.getColumnIndex(columName)));
-                                    break;
-                                case DataType.INT:
-                                    field.set(object, cursor.getInt(cursor.getColumnIndex(columName)));
-                                    break;
-                                case DataType.ClassDOUBLE:
-                                    field.set(object, cursor.getDouble(cursor.getColumnIndex(columName)));
-                                    break;
-                                case DataType.ClassSHORT:
-                                    field.set(object, cursor.getShort(cursor.getColumnIndex(columName)));
-                                    break;
-                                case DataType.ClassLONG:
-                                    field.set(object, cursor.getLong(cursor.getColumnIndex(columName)));
-                                    break;
-                                case DataType.ClassFLOAT:
-                                    field.set(object, cursor.getFloat(cursor.getColumnIndex(columName)));
-                                    break;
-                            }
+                    //如果数据库的字段名和类的属性名称一样就说明是同一个变量
+                    if (field.getName().equals(columName)) {
+                        //将数据库的数据设置给类的属性
+                        switch (field.getType().toString()) {
+                            case DataType.STRING:
+                                field.set(object, cursor.getString(cursor.getColumnIndex(columName)));
+                                break;
+                            case DataType.INTEGER:
+                                field.set(object, cursor.getInt(cursor.getColumnIndex(columName)));
+                                break;
+                            case DataType.INT:
+                                field.set(object, cursor.getInt(cursor.getColumnIndex(columName)));
+                                break;
+                            case DataType.ClassDOUBLE:
+                                field.set(object, cursor.getDouble(cursor.getColumnIndex(columName)));
+                                break;
+                            case DataType.ClassSHORT:
+                                field.set(object, cursor.getShort(cursor.getColumnIndex(columName)));
+                                break;
+                            case DataType.ClassLONG:
+                                field.set(object, cursor.getLong(cursor.getColumnIndex(columName)));
+                                break;
+                            case DataType.ClassFLOAT:
+                                field.set(object, cursor.getFloat(cursor.getColumnIndex(columName)));
+                                break;
                         }
                         break;
                     }
@@ -172,7 +169,7 @@ public class ClassHandler {
         for (int i = 0; i < name.length; i++) {
             wherearg += name[i] + "=?";
             if (i != name.length - 1)
-                wherearg += "&";
+                wherearg += " and ";
         }
         return wherearg;
     }
