@@ -2,8 +2,9 @@ package com.ruan.databasesdk.Operation;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.util.Log;
 
-import com.ruan.databasesdk.DataType;
+import com.ruan.databasesdk.api.DataType;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -93,6 +94,24 @@ public class ClassHandler {
                         case DataType.ClassBYTE:
                             contentValues.put(field.getName(), (Byte) field.get(o));
                             break;
+                        case DataType.BOOLEAN:
+                            contentValues.put(field.getName(), (boolean) field.get(o));
+                            break;
+                        case DataType.SHORT:
+                            contentValues.put(field.getName(), (short) field.get(o));
+                            break;
+                        case DataType.DOUBLE:
+                            contentValues.put(field.getName(), (double) field.get(o));
+                            break;
+                        case DataType.FLOAT:
+                            contentValues.put(field.getName(), (float) field.get(o));
+                            break;
+                        case DataType.LONG:
+                            contentValues.put(field.getName(), (long) field.get(o));
+                            break;
+                        case DataType.BYTE:
+                            contentValues.put(field.getName(), (byte) field.get(o));
+                            break;
                     }
                 }
             }
@@ -145,6 +164,27 @@ public class ClassHandler {
                             case DataType.ClassFLOAT:
                                 field.set(object, cursor.getFloat(cursor.getColumnIndex(columName)));
                                 break;
+                            case DataType.BOOLEAN:
+                                if (cursor.getInt(cursor.getColumnIndex(columName)) == 0)
+                                    field.set(object, false);
+                                else
+                                    field.set(object, true);
+                                break;
+                            case DataType.SHORT:
+                                field.set(object, cursor.getInt(cursor.getColumnIndex(columName)));
+                                break;
+                            case DataType.DOUBLE:
+                                field.set(object, cursor.getDouble(cursor.getColumnIndex(columName)));
+                                break;
+                            case DataType.FLOAT:
+                                field.set(object, cursor.getFloat(cursor.getColumnIndex(columName)));
+                                break;
+                            case DataType.LONG:
+                                field.set(object, cursor.getLong(cursor.getColumnIndex(columName)));
+                                break;
+                            case DataType.BYTE:
+                                field.set(object, cursor.getString(cursor.getColumnIndex(columName)));
+                                break;
                         }
                         break;
                     }
@@ -189,5 +229,112 @@ public class ClassHandler {
                 wherearg += ",";
         }
         return wherearg;
+    }
+
+    /**
+     * 通过对象Object 获取private获取public每个属性的类型
+     *
+     * @param object
+     * @return
+     */
+    public static ArrayList<String> ObjectToArraryName(Object object) {
+        ArrayList<String> list = new ArrayList<>();
+
+        Class loadClass = object.getClass();
+
+        Field[] fields = loadClass.getFields();
+        Field[] declaredFields = loadClass.getDeclaredFields();
+
+        ArrayList<Field> fieldList = ClassHandler.FieldsToOne(fields, declaredFields);
+
+        for (Field field : fieldList) {
+            field.setAccessible(true);
+
+            //如果属性的修饰符是private 和 public
+            if (DataType.PRIVATE.equals(Modifier.toString(field.getModifiers())) || DataType.PUBLIC.equals(Modifier.toString(field.getModifiers()))) {
+                Log.e("Ruan", field.getType().toString());
+                switch (field.getType().toString()) {
+                    case DataType.STRING:
+                        list.add("varchar(255)");
+                        break;
+                    case DataType.INTEGER:
+                        list.add("integer");
+                        break;
+                    case DataType.INT:
+                        list.add("integer");
+                        break;
+                    case DataType.ClassDOUBLE:
+                        list.add("double");
+                        break;
+                    case DataType.ClassSHORT:
+                        //sqlite不支持short类型使用int代替
+                        list.add("integer");
+                        break;
+                    case DataType.ClassLONG:
+                        //sqlite不支持long类型使用int代替
+                        list.add("integer");
+                        break;
+                    case DataType.ClassBOOLEAN:
+                        //sqlite不支持boolean类型使用int代替
+                        list.add("integer");
+                        break;
+                    case DataType.ClassFLOAT:
+                        list.add("float");
+                        break;
+                    case DataType.ClassBYTE:
+                        //sqlite不支持byte类型使用varchar代替
+                        list.add("varchar(255)");
+                        break;
+                    case DataType.BOOLEAN:
+                        list.add("integer");
+                        break;
+                    case DataType.SHORT:
+                        list.add("integer");
+                        break;
+                    case DataType.DOUBLE:
+                        list.add("double");
+                        break;
+                    case DataType.FLOAT:
+                        list.add("float");
+                        break;
+                    case DataType.LONG:
+                        list.add("integer");
+                        break;
+                    case DataType.BYTE:
+                        list.add("varchar(255)");
+                        break;
+                }
+            }
+        }
+        return list;
+    }
+
+    /**
+     * 通过对象Object 获取属性名称
+     *
+     * @param object
+     * @return
+     */
+    public static ArrayList<String> ObjectToArraryContent(Object object) {
+        ArrayList<String> list = new ArrayList<>();
+
+        Class loadClass = object.getClass();
+
+        Log.e("Ruan", loadClass.getName());
+
+        Field[] fields = loadClass.getFields();
+        Field[] declaredFields = loadClass.getDeclaredFields();
+
+        ArrayList<Field> fieldList = ClassHandler.FieldsToOne(fields, declaredFields);
+
+        for (Field field : fieldList) {
+            field.setAccessible(true);
+
+            //如果属性的修饰符是private 和 public
+            if (DataType.PRIVATE.equals(Modifier.toString(field.getModifiers())) || DataType.PUBLIC.equals(Modifier.toString(field.getModifiers()))) {
+                list.add(field.getName());
+            }
+        }
+        return list;
     }
 }

@@ -17,6 +17,8 @@ public interface Database {
          * @return              返回一个创建数据的对象
          */
         public Establish CreateTable(String database, String table, boolean state);
+
+
     }
 
 }

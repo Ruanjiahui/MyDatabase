@@ -28,7 +28,8 @@ public class CreateTable {
 
         if (databaseHelper == null) {
             databaseHelper = new DatabaseHelper(context, db_name);
-            synchronized (databaseHelper){}
+            synchronized (databaseHelper) {
+            }
         }
         return databaseHelper;
     }
@@ -61,6 +62,37 @@ public class CreateTable {
         }
     }
 
+
+    /**
+     * 创建表的方法
+     *
+     * @param context
+     * @param db_name     数据库名字
+     * @param Table_name  表的名字
+     * @param object      封装数据的对象
+     * @param auto_key    自动增长的语句如果没有则为空
+     * @param primary_key 主键没有则为空
+     */
+    public static void TABLE(Context context, String db_name, String Table_name, Object object, String auto_key, String primary_key) {
+        DatabaseHelper databaseHelper = getInstance(context, db_name);
+        sqLiteDatabase = databaseHelper.getWritableDatabase();
+
+        key = ClassHandler.ObjectToArraryName(object);
+
+        content = "";
+        content = getContent(ClassHandler.ObjectToArraryContent(object), key , auto_key, primary_key);
+
+        System.out.println(content);
+
+        sql = "CREATE TABLE " + Table_name + "(" + content + ")";
+
+        try {
+            sqLiteDatabase.execSQL(sql);
+        } catch (Exception e) {
+            Log.e("Activity", "创建表不成功");
+        }
+    }
+
     /**
      * 将封装在establish这个对象的数据解析出来
      *
@@ -73,6 +105,31 @@ public class CreateTable {
     private static String getContent(ArrayList<String> list, Establish establish, String auto_key, String primary_key) {
         for (int i = 0; i < list.size(); i++) {
             content += list.get(i) + " " + establish.get(list.get(i));
+            if (list.get(i).equals(primary_key))
+                content += " primary key";
+            if (list.get(i).equals(auto_key)) {
+                content += " auto_increment";
+            }
+            if (i != list.size() - 1)
+                content += ",";
+        }
+        return content;
+    }
+
+
+    /**
+     * 将封装在establish这个对象的数据解析出来
+     *
+     * @param list        创建表的字段名
+     * @param list1       创建表的字段参数
+     * @param auto_key    创建表的自动增长
+     * @param primary_key 创建表的主键
+     * @return
+     */
+    private static String getContent(ArrayList<String> list, ArrayList<String> list1, String auto_key, String primary_key) {
+        Log.e("Ruan" , list.size() + "--" + list1.size());
+        for (int i = 0; i < list.size(); i++) {
+            content += list.get(i) + " " + list1.get(i);
             if (list.get(i).equals(primary_key))
                 content += " primary key";
             if (list.get(i).equals(auto_key)) {
