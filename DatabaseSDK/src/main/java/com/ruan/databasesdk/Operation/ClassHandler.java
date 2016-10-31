@@ -206,10 +206,12 @@ public class ClassHandler {
      */
     public static String ArrayToString(String[] name) {
         String wherearg = "";
-        for (int i = 0; i < name.length; i++) {
-            wherearg += name[i] + "=?";
-            if (i != name.length - 1)
-                wherearg += " and ";
+        if (name != null && name.length > 0) {
+            for (int i = 0; i < name.length; i++) {
+                wherearg += name[i] + "=?";
+                if (i != name.length - 1)
+                    wherearg += " and ";
+            }
         }
         return wherearg;
     }
