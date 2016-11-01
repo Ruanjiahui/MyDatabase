@@ -108,7 +108,10 @@ public class BaseUser extends Operation {
      * @return 返回的一个对象(返回第一个的对象)
      */
     public Object QUERY(String database, String table, Class loadClass) {
-        return new MappingClass().CursorToArray(query(context, database, table, null, "", null, "", "", "", ""), loadClass).get(0);
+        ArrayList<Object> list = new MappingClass().CursorToArray(query(context, database, table, null, "", null, "", "", "", ""), loadClass);
+        if (list != null && list.size() > 0)
+            return list.get(0);
+        return null;
     }
 
     /**
@@ -137,7 +140,10 @@ public class BaseUser extends Operation {
      * @return 返回一个对象
      */
     public Object QUERY(String database, String table, String[] whereclause, String[] whereargs, Class loadClass) {
-        return new MappingClass().CursorToArray(query(context, database, table, null, ClassHandler.ArrayToString(whereclause), whereargs, "", "", "", ""), loadClass).get(0);
+        ArrayList<Object> list = new MappingClass().CursorToArray(query(context, database, table, null, ClassHandler.ArrayToString(whereclause), whereargs, "", "", "", ""), loadClass);
+        if (list != null && list.size() > 0)
+            return list.get(0);
+        return null;
     }
 
 
@@ -151,7 +157,7 @@ public class BaseUser extends Operation {
      * @return 返回一个链表的对象
      */
     public ArrayList<Object> distinctQUERY(String database, String table, String[] distinctType, Class loadClass) {
-        return new MappingClass().CursorToArray(distinctQuery(context, database, table, null, "", null, "", "", "", "", true, ClassHandler.distinctArrayToString(distinctType)), loadClass);
+        return new MappingClass().CursorToArray(distinctQuery(context, database, table, null, "", null, "", "", "", "", distinctType) , loadClass);
     }
 
     /**
