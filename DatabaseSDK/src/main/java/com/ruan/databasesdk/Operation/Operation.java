@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.ruan.databasesdk.api.DatabaseHelper;
 
@@ -76,6 +77,39 @@ public class Operation {
 
     }
 
+//    /**
+//     * 查询去重数据库
+//     *
+//     * @param context
+//     * @param db
+//     * @param Table_Name
+//     * @param colums        获取数据的列名称
+//     * @param selection     where后面的内容
+//     * @param selectionArgs where后面内容的参数
+//     * @param groupBy       GROUP BY后面的字符串
+//     * @param having        HAVING后面的字符串
+//     * @param orderBy       ORDER BY后面的字符串
+//     * @param limit         返回的数量
+//     * @param distinct      是否去重
+//     * @return
+//     */
+//    protected Cursor distinctQuery(Context context, String db, String Table_Name, String[] colums, String selection, String[] selectionArgs, String groupBy, String having, String orderBy, String limit, boolean distinct) {
+//        databaseHelper = CreateTable.getInstance(context, db);
+//        sqLiteDatabase = databaseHelper.getReadableDatabase();
+//        try {
+//            String distincts = "";
+//            if (distinctType != null && distinctType.length > 0) {
+//                distincts += distinctType[0];
+//                for (int i = 1; i < distinctType.length; i++) {
+//                    distincts += "," + distinctType[i];
+//                }
+//            }
+//            return sqLiteDatabase.query(Table_Name, colums, selection, selectionArgs, groupBy, having, distincts, limit);
+//        } catch (Exception e) {
+//            return null;
+//        }
+//    }
+
     /**
      * 查询去重数据库
      *
@@ -89,7 +123,6 @@ public class Operation {
      * @param having        HAVING后面的字符串
      * @param orderBy       ORDER BY后面的字符串
      * @param limit         返回的数量
-     * @param distinctType      是否去重
      * @return
      */
     protected Cursor distinctQuery(Context context, String db, String Table_Name, String[] colums, String selection, String[] selectionArgs, String groupBy, String having, String orderBy, String limit, String[] distinctType) {
@@ -103,12 +136,12 @@ public class Operation {
                     distincts += "," + distinctType[i];
                 }
             }
-            return sqLiteDatabase.query(Table_Name, colums, selection, selectionArgs, groupBy, having, distincts, limit);
+            Log.e("System.out" , distincts);
+            return sqLiteDatabase.query(Table_Name, colums, selection, selectionArgs, distincts, having, orderBy, limit);
         } catch (Exception e) {
             return null;
         }
     }
-
 
     /**
      * 删除表数据和删除但条数据

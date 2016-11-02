@@ -105,7 +105,7 @@ public class GetDatabaseData extends Operation {
      * @return
      */
     @Deprecated
-    public ArrayList<Map<String, String>> distinctQueryArray(Context context, String db, String Table_Name, String[] colums, String selection, String[] selectionArgs, String groupBy, String having, String orderBy, String limit, String[] distinct) {
+    public ArrayList<Map<String, String>> distinctQueryArray(Context context, String db, String Table_Name, String[] colums, String selection, String[] selectionArgs, String groupBy, String having, String orderBy, String limit , String[] distinct) {
         Cursor cursor = distinctQuery(context, db, Table_Name, colums, selection, selectionArgs, groupBy, having, orderBy, limit, distinct);
 
         return AnalysisCursorArray(cursor);

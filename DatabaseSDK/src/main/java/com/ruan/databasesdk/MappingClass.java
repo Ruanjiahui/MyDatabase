@@ -2,12 +2,14 @@ package com.ruan.databasesdk;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.util.Log;
 
 import com.ruan.databasesdk.Operation.ClassHandler;
 import com.ruan.databasesdk.api.LoadClass;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Map;
 
 /**
@@ -57,10 +59,15 @@ public class MappingClass extends LoadClass {
         Field[] declaredFields = loadClass.getDeclaredFields();
 
         ArrayList<Field> list = ClassHandler.FieldsToOne(fields, declaredFields);
-        String[] colums = cursor.getColumnNames();
 
-        while (cursor.moveToNext()) {
-            arrayList.add(ClassHandler.CursorToObject(list, cursor, colums, loadClass));
+        Log.e("System.out" , cursor.getColumnCount() + "---");
+        if (cursor.getColumnNames() != null && cursor.getColumnNames().length > 0) {
+            String[] colums = cursor.getColumnNames();
+
+            Log.e("System.out" , Arrays.toString(colums) + "---");
+            while (cursor.moveToNext()) {
+                arrayList.add(ClassHandler.CursorToObject(list, cursor, colums, loadClass));
+            }
         }
 
         return arrayList;

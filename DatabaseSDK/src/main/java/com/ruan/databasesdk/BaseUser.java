@@ -3,11 +3,13 @@ package com.ruan.databasesdk;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.util.Log;
 
 import com.ruan.databasesdk.Operation.ClassHandler;
 import com.ruan.databasesdk.Operation.Operation;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Created by Ruanjiahui on 2016/10/21.
@@ -157,7 +159,7 @@ public class BaseUser extends Operation {
      * @return 返回一个链表的对象
      */
     public ArrayList<Object> distinctQUERY(String database, String table, String[] distinctType, Class loadClass) {
-        return new MappingClass().CursorToArray(distinctQuery(context, database, table, null, "", null, "", "", "", "", distinctType) , loadClass);
+        return new MappingClass().CursorToArray(distinctQuery(context, database, table, null, "", null, "", "", "", "", distinctType), loadClass);
     }
 
     /**

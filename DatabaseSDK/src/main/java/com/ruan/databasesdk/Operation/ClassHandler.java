@@ -9,6 +9,7 @@ import com.ruan.databasesdk.api.DataType;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Created by Administrator on 2016/10/21.
@@ -138,7 +139,6 @@ public class ClassHandler {
                 for (Field field : list) {
                     //设置可以访问
                     field.setAccessible(true);
-
                     //如果数据库的字段名和类的属性名称一样就说明是同一个变量
                     if (field.getName().equals(columName)) {
                         //将数据库的数据设置给类的属性
@@ -254,7 +254,6 @@ public class ClassHandler {
 
             //如果属性的修饰符是private 和 public
             if (DataType.PRIVATE.equals(Modifier.toString(field.getModifiers())) || DataType.PUBLIC.equals(Modifier.toString(field.getModifiers()))) {
-                Log.e("Ruan", field.getType().toString());
                 switch (field.getType().toString()) {
                     case DataType.STRING:
                         list.add("varchar(255)");
@@ -321,8 +320,6 @@ public class ClassHandler {
         ArrayList<String> list = new ArrayList<>();
 
         Class loadClass = object.getClass();
-
-        Log.e("Ruan", loadClass.getName());
 
         Field[] fields = loadClass.getFields();
         Field[] declaredFields = loadClass.getDeclaredFields();
