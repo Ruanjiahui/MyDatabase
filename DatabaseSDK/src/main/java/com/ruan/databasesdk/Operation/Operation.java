@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteStatement;
 import android.util.Log;
 
 import com.ruan.databasesdk.api.DatabaseHelper;
@@ -136,7 +137,7 @@ public class Operation {
                     distincts += "," + distinctType[i];
                 }
             }
-            Log.e("System.out" , distincts);
+            Log.e("System.out", distincts);
             return sqLiteDatabase.query(Table_Name, colums, selection, selectionArgs, distincts, having, orderBy, limit);
         } catch (Exception e) {
             return null;
@@ -159,6 +160,22 @@ public class Operation {
 
         return sqLiteDatabase.delete(Table_Name, whereclause, whereargs);
     }
+
+    /**
+     * 给表增加字段
+     *
+     * @param context
+     * @param db
+     * @param Table_Name
+     * @param value
+     */
+    protected void onUpgrade(Context context, String db, String Table_Name, String value) {
+        databaseHelper = CreateTable.getInstance(context, db);
+        sqLiteDatabase = databaseHelper.getWritableDatabase();
+
+        sqLiteDatabase.execSQL("alter table " + Table_Name + " add column " + value);
+    }
+
 
     /**
      * 判断有没有这个表

@@ -257,6 +257,26 @@ public class BaseUser extends Operation {
 
 
     /**
+     * 表的结构发生变化处理方法
+     */
+
+    /*********************************            **************************************************/
+
+    /**
+     * 添加表的字段
+     *
+     * @param database 数据库的名称
+     * @param table    数据库表的名称
+     * @param values   传输的数据
+     */
+    public void ALTERTABLE(String database, String table, String[] values) {
+        for (String value : values) {
+            onUpgrade(context, database, table, value);
+        }
+    }
+
+
+    /**
      * 判断该数据库表的是否存在此条数据
      *
      * @param database    数据库的名称
